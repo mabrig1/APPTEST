@@ -1,7 +1,17 @@
+# APPTEST deploys as a Cloudflare Worker (not Pages).
+# Connected build command: none. Deploy command: npx wrangler deploy.
 name = "apptest"
+main = "./worker/index.js"
 compatibility_date = "2026-11-13"
-pages_build_output_dir = "./public"
 
-# Public, non-secret metadata. Actual API keys must only be entered as Cloudflare encrypted secrets.
+[assets]
+directory = "./public"
+binding = "ASSETS"
+run_worker_first = ["/api/*"]
+not_found_handling = "404-page"
+
 [vars]
 APPTEST_PUBLIC_URL = "https://apptest.mabrigkorie.org"
+
+# Real API keys must be installed as encrypted Cloudflare Worker secrets.
+# AI_ENABLED and EMAIL_ENABLED stay unset/disabled until credentials are ready.
