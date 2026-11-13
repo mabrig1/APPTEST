@@ -1,70 +1,1035 @@
 {
-  "version": 1,
+  "version": 2,
   "name": "BOSAL STORES",
   "sector": "Supermarket / Eatery",
-  "headline": "Groceries, household essentials and a neighborhood eatery at Hilltop, Nsukka.",
-  "description": "An illustrative digital storefront for BOSAL STORES, serving students and local residents near the University of Nigeria, Nsukka. Menu, products, stock and pricing await owner approval.",
+  "headline": "Shop everyday groceries, household essentials and discover delicious food at Hilltop, Nsukka.",
+  "description": "Explore a fully populated demonstration of the proposed BOSAL STORE supermarket and BOSAL RESTAURANT experience. Actual items, meal availability and naira prices must be confirmed by BOSAL management before this can operate as a real shop.",
   "owner": "AGBO SALVATION, O.",
   "phone": "09063866923",
+  "phoneAlt": "09046725725",
   "address": "No 12 Hill Top, opposite Trinity Lodge, Nsukka, Enugu State, Nigeria",
-  "color": "#15735c",
+  "color": "#bc1f30",
   "status": "client-review",
+  "demoPrices": true,
   "offerings": [
     {
-      "name": "Daily rice essentials",
-      "category": "Groceries",
+      "name": "Long grain rice",
+      "category": "Rice, Pasta & Grains",
+      "section": "store",
+      "unit": "5 kg bag",
+      "price": 14900,
       "icon": "🍚",
-      "description": "Illustrative grocery category",
-      "price": null
+      "description": "Everyday cooking rice",
+      "tag": "Popular"
     },
     {
-      "name": "Bread and snacks",
-      "category": "Groceries",
-      "icon": "🥖",
-      "description": "Example daily essentials",
-      "price": null
+      "name": "Parboiled rice",
+      "category": "Rice, Pasta & Grains",
+      "section": "store",
+      "unit": "2 kg pack",
+      "price": 6100,
+      "icon": "🍚",
+      "description": "Convenient family-size rice pack"
     },
     {
-      "name": "Fresh produce",
-      "category": "Groceries",
-      "icon": "🥬",
-      "description": "Illustrative fruit and vegetable selection",
-      "price": null
+      "name": "Brown beans",
+      "category": "Rice, Pasta & Grains",
+      "section": "store",
+      "unit": "1 kg",
+      "price": 2850,
+      "icon": "🫘",
+      "description": "Dry beans for traditional meals"
     },
     {
-      "name": "Breakfast items",
-      "category": "Groceries",
+      "name": "White beans",
+      "category": "Rice, Pasta & Grains",
+      "section": "store",
+      "unit": "1 kg",
+      "price": 2750,
+      "icon": "🫘",
+      "description": "Versatile dry beans"
+    },
+    {
+      "name": "White garri",
+      "category": "Rice, Pasta & Grains",
+      "section": "store",
+      "unit": "1 kg pack",
+      "price": 1250,
+      "icon": "🥣",
+      "description": "Cassava flakes for garri or eba"
+    },
+    {
+      "name": "Yellow garri",
+      "category": "Rice, Pasta & Grains",
+      "section": "store",
+      "unit": "1 kg pack",
+      "price": 1350,
+      "icon": "🥣",
+      "description": "Yellow cassava flakes"
+    },
+    {
+      "name": "Spaghetti",
+      "category": "Rice, Pasta & Grains",
+      "section": "store",
+      "unit": "500 g pack",
+      "price": 1150,
+      "icon": "🍝",
+      "description": "Pasta for quick family meals",
+      "tag": "Popular"
+    },
+    {
+      "name": "Macaroni",
+      "category": "Rice, Pasta & Grains",
+      "section": "store",
+      "unit": "500 g pack",
+      "price": 1250,
+      "icon": "🍝",
+      "description": "Elbow macaroni pasta"
+    },
+    {
+      "name": "Instant noodles",
+      "category": "Rice, Pasta & Grains",
+      "section": "store",
+      "unit": "1 pack",
+      "price": 390,
+      "icon": "🍜",
+      "description": "Quick noodle meal"
+    },
+    {
+      "name": "Semovita flour",
+      "category": "Rice, Pasta & Grains",
+      "section": "store",
+      "unit": "1 kg bag",
+      "price": 1950,
+      "icon": "🥣",
+      "description": "Semolina-style swallow flour"
+    },
+    {
+      "name": "Wheat meal",
+      "category": "Rice, Pasta & Grains",
+      "section": "store",
+      "unit": "1 kg bag",
+      "price": 1700,
+      "icon": "🌾",
+      "description": "Whole wheat swallow flour"
+    },
+    {
+      "name": "Oat flakes",
+      "category": "Rice, Pasta & Grains",
+      "section": "store",
+      "unit": "500 g tub",
+      "price": 2800,
+      "icon": "🥣",
+      "description": "Breakfast oats"
+    },
+    {
+      "name": "Vegetable cooking oil",
+      "category": "Cooking Essentials",
+      "section": "store",
+      "unit": "1 litre",
+      "price": 3850,
+      "icon": "🫙",
+      "description": "Refined vegetable oil for everyday cooking",
+      "tag": "Popular"
+    },
+    {
+      "name": "Red palm oil",
+      "category": "Cooking Essentials",
+      "section": "store",
+      "unit": "1 litre",
+      "price": 3500,
+      "icon": "🫙",
+      "description": "Palm oil for native soups and stews"
+    },
+    {
+      "name": "Tomato paste",
+      "category": "Cooking Essentials",
+      "section": "store",
+      "unit": "70 g sachet",
+      "price": 320,
+      "icon": "🍅",
+      "description": "Concentrated tomato paste"
+    },
+    {
+      "name": "Seasoning cubes",
+      "category": "Cooking Essentials",
+      "section": "store",
+      "unit": "Pack of 10",
+      "price": 950,
+      "icon": "🧂",
+      "description": "Savory cooking seasoning"
+    },
+    {
+      "name": "Table salt",
+      "category": "Cooking Essentials",
+      "section": "store",
+      "unit": "500 g",
+      "price": 450,
+      "icon": "🧂",
+      "description": "Iodized cooking salt"
+    },
+    {
+      "name": "Ground pepper",
+      "category": "Cooking Essentials",
+      "section": "store",
+      "unit": "100 g pack",
+      "price": 900,
+      "icon": "🌶️",
+      "description": "Ground pepper for soups and stews"
+    },
+    {
+      "name": "Curry powder",
+      "category": "Cooking Essentials",
+      "section": "store",
+      "unit": "100 g pack",
+      "price": 850,
+      "icon": "🧂",
+      "description": "Aromatic blended spice"
+    },
+    {
+      "name": "Dried thyme",
+      "category": "Cooking Essentials",
+      "section": "store",
+      "unit": "50 g pack",
+      "price": 750,
+      "icon": "🌿",
+      "description": "Dried herb seasoning"
+    },
+    {
+      "name": "Crayfish",
+      "category": "Cooking Essentials",
+      "section": "store",
+      "unit": "100 g pack",
+      "price": 1850,
+      "icon": "🦐",
+      "description": "Dry crayfish seasoning"
+    },
+    {
+      "name": "Dried stockfish",
+      "category": "Cooking Essentials",
+      "section": "store",
+      "unit": "Small pack",
+      "price": 3800,
+      "icon": "🐟",
+      "description": "Traditional dried fish for soup"
+    },
+    {
+      "name": "Family bread loaf",
+      "category": "Breakfast & Dairy",
+      "section": "store",
+      "unit": "1 loaf",
+      "price": 2100,
+      "icon": "🍞",
+      "description": "Fresh bread concept",
+      "tag": "Popular"
+    },
+    {
+      "name": "Eggs",
+      "category": "Breakfast & Dairy",
+      "section": "store",
+      "unit": "Crate of 30",
+      "price": 6400,
       "icon": "🥚",
-      "description": "Sample household food products",
-      "price": null
+      "description": "Whole chicken eggs"
     },
     {
-      "name": "Soft drinks and water",
-      "category": "Drinks",
+      "name": "Evaporated milk",
+      "category": "Breakfast & Dairy",
+      "section": "store",
+      "unit": "170 g tin",
+      "price": 750,
+      "icon": "🥛",
+      "description": "Creamy evaporated milk"
+    },
+    {
+      "name": "Powdered milk",
+      "category": "Breakfast & Dairy",
+      "section": "store",
+      "unit": "400 g pack",
+      "price": 4900,
+      "icon": "🥛",
+      "description": "Everyday milk powder"
+    },
+    {
+      "name": "Granulated sugar",
+      "category": "Breakfast & Dairy",
+      "section": "store",
+      "unit": "1 kg",
+      "price": 2450,
+      "icon": "🍬",
+      "description": "White crystal sugar"
+    },
+    {
+      "name": "Breakfast cornflakes",
+      "category": "Breakfast & Dairy",
+      "section": "store",
+      "unit": "500 g box",
+      "price": 3800,
+      "icon": "🥣",
+      "description": "Crunchy breakfast cereal"
+    },
+    {
+      "name": "Chocolate breakfast drink",
+      "category": "Breakfast & Dairy",
+      "section": "store",
+      "unit": "400 g pack",
+      "price": 4300,
+      "icon": "☕",
+      "description": "Chocolate beverage powder"
+    },
+    {
+      "name": "Tea bags",
+      "category": "Breakfast & Dairy",
+      "section": "store",
+      "unit": "25-count box",
+      "price": 1650,
+      "icon": "🫖",
+      "description": "Classic black tea"
+    },
+    {
+      "name": "Table margarine",
+      "category": "Breakfast & Dairy",
+      "section": "store",
+      "unit": "250 g tub",
+      "price": 2100,
+      "icon": "🧈",
+      "description": "Spread for bread and cooking"
+    },
+    {
+      "name": "Fruit jam",
+      "category": "Breakfast & Dairy",
+      "section": "store",
+      "unit": "450 g jar",
+      "price": 2850,
+      "icon": "🍓",
+      "description": "Sweet fruit jam spread"
+    },
+    {
+      "name": "Peanut butter",
+      "category": "Breakfast & Dairy",
+      "section": "store",
+      "unit": "340 g jar",
+      "price": 3500,
+      "icon": "🥜",
+      "description": "Creamy peanut spread"
+    },
+    {
+      "name": "Bottled water",
+      "category": "Drinks & Water",
+      "section": "store",
+      "unit": "75 cl bottle",
+      "price": 400,
+      "icon": "💧",
+      "description": "Purified drinking water",
+      "tag": "Popular"
+    },
+    {
+      "name": "Packaged drinking water",
+      "category": "Drinks & Water",
+      "section": "store",
+      "unit": "Bag / 20 sachets",
+      "price": 550,
+      "icon": "💧",
+      "description": "Packaged sachet water"
+    },
+    {
+      "name": "Cola soft drink",
+      "category": "Drinks & Water",
+      "section": "store",
+      "unit": "50 cl bottle",
+      "price": 700,
       "icon": "🥤",
-      "description": "Example chilled drinks category",
-      "price": null
+      "description": "Carbonated soft drink"
     },
     {
-      "name": "Household cleaning supplies",
-      "category": "Household",
+      "name": "Orange soft drink",
+      "category": "Drinks & Water",
+      "section": "store",
+      "unit": "50 cl bottle",
+      "price": 700,
+      "icon": "🍊",
+      "description": "Orange-flavoured soda"
+    },
+    {
+      "name": "Malt drink",
+      "category": "Drinks & Water",
+      "section": "store",
+      "unit": "33 cl can",
+      "price": 1050,
+      "icon": "🥤",
+      "description": "Non-alcoholic malt beverage"
+    },
+    {
+      "name": "Fruit juice",
+      "category": "Drinks & Water",
+      "section": "store",
+      "unit": "1 litre carton",
+      "price": 2600,
+      "icon": "🧃",
+      "description": "Mixed fruit juice"
+    },
+    {
+      "name": "Yoghurt drink",
+      "category": "Drinks & Water",
+      "section": "store",
+      "unit": "50 cl bottle",
+      "price": 1550,
+      "icon": "🥛",
+      "description": "Chilled flavoured yoghurt"
+    },
+    {
+      "name": "Bottled iced tea",
+      "category": "Drinks & Water",
+      "section": "store",
+      "unit": "50 cl bottle",
+      "price": 1150,
+      "icon": "🧋",
+      "description": "Ready-to-drink tea"
+    },
+    {
+      "name": "Energy drink",
+      "category": "Drinks & Water",
+      "section": "store",
+      "unit": "25 cl can",
+      "price": 1250,
+      "icon": "⚡",
+      "description": "Caffeinated energy beverage"
+    },
+    {
+      "name": "Fresh tomatoes",
+      "category": "Fresh Produce",
+      "section": "store",
+      "unit": "1 kg",
+      "price": 2350,
+      "icon": "🍅",
+      "description": "Fresh tomatoes for stew and salad"
+    },
+    {
+      "name": "Red onions",
+      "category": "Fresh Produce",
+      "section": "store",
+      "unit": "1 kg",
+      "price": 1650,
+      "icon": "🧅",
+      "description": "Fresh cooking onions"
+    },
+    {
+      "name": "Bananas",
+      "category": "Fresh Produce",
+      "section": "store",
+      "unit": "Small bunch",
+      "price": 1650,
+      "icon": "🍌",
+      "description": "Ripe yellow bananas",
+      "tag": "Popular"
+    },
+    {
+      "name": "Sweet oranges",
+      "category": "Fresh Produce",
+      "section": "store",
+      "unit": "4 pieces",
+      "price": 1250,
+      "icon": "🍊",
+      "description": "Fresh citrus oranges"
+    },
+    {
+      "name": "Green apples",
+      "category": "Fresh Produce",
+      "section": "store",
+      "unit": "1 piece",
+      "price": 950,
+      "icon": "🍏",
+      "description": "Crisp fresh apple"
+    },
+    {
+      "name": "Carrots",
+      "category": "Fresh Produce",
+      "section": "store",
+      "unit": "500 g",
+      "price": 1250,
+      "icon": "🥕",
+      "description": "Fresh orange carrots"
+    },
+    {
+      "name": "Green cabbage",
+      "category": "Fresh Produce",
+      "section": "store",
+      "unit": "1 head",
+      "price": 2000,
+      "icon": "🥬",
+      "description": "Fresh cabbage for salad"
+    },
+    {
+      "name": "Green bell peppers",
+      "category": "Fresh Produce",
+      "section": "store",
+      "unit": "500 g",
+      "price": 2200,
+      "icon": "🫑",
+      "description": "Sweet peppers for cooking"
+    },
+    {
+      "name": "Ripe plantain",
+      "category": "Fresh Produce",
+      "section": "store",
+      "unit": "1 finger",
+      "price": 950,
+      "icon": "🍌",
+      "description": "Plantain for frying or boiling"
+    },
+    {
+      "name": "Yam tuber",
+      "category": "Fresh Produce",
+      "section": "store",
+      "unit": "Medium piece",
+      "price": 4500,
+      "icon": "🍠",
+      "description": "Fresh yam for traditional meals"
+    },
+    {
+      "name": "Lettuce",
+      "category": "Fresh Produce",
+      "section": "store",
+      "unit": "1 head",
+      "price": 1600,
+      "icon": "🥬",
+      "description": "Fresh salad leaves"
+    },
+    {
+      "name": "Butter biscuits",
+      "category": "Snacks & Biscuits",
+      "section": "store",
+      "unit": "1 pack",
+      "price": 700,
+      "icon": "🍪",
+      "description": "Crunchy tea-time biscuits"
+    },
+    {
+      "name": "Chocolate cookies",
+      "category": "Snacks & Biscuits",
+      "section": "store",
+      "unit": "1 pack",
+      "price": 1250,
+      "icon": "🍪",
+      "description": "Sweet chocolate chip cookies"
+    },
+    {
+      "name": "Plantain chips",
+      "category": "Snacks & Biscuits",
+      "section": "store",
+      "unit": "1 pack",
+      "price": 950,
+      "icon": "🍌",
+      "description": "Crispy fried plantain snack"
+    },
+    {
+      "name": "Chin chin",
+      "category": "Snacks & Biscuits",
+      "section": "store",
+      "unit": "250 g pack",
+      "price": 1450,
+      "icon": "🥨",
+      "description": "Classic crunchy Nigerian snack"
+    },
+    {
+      "name": "Roasted groundnuts",
+      "category": "Snacks & Biscuits",
+      "section": "store",
+      "unit": "250 g pack",
+      "price": 1250,
+      "icon": "🥜",
+      "description": "Roasted peanuts for snacking"
+    },
+    {
+      "name": "Potato crisps",
+      "category": "Snacks & Biscuits",
+      "section": "store",
+      "unit": "1 tube",
+      "price": 2200,
+      "icon": "🥔",
+      "description": "Crispy potato snack"
+    },
+    {
+      "name": "Popcorn",
+      "category": "Snacks & Biscuits",
+      "section": "store",
+      "unit": "1 pack",
+      "price": 650,
+      "icon": "🍿",
+      "description": "Light crunchy popcorn"
+    },
+    {
+      "name": "Chocolate bar",
+      "category": "Snacks & Biscuits",
+      "section": "store",
+      "unit": "1 piece",
+      "price": 1300,
+      "icon": "🍫",
+      "description": "Milk chocolate treat"
+    },
+    {
+      "name": "Bath soap",
+      "category": "Personal Care",
+      "section": "store",
+      "unit": "1 bar",
+      "price": 800,
       "icon": "🧼",
-      "description": "Illustrative household essentials",
-      "price": null
+      "description": "Everyday bath soap"
     },
     {
-      "name": "Rice meal idea",
-      "category": "Eatery",
+      "name": "Toothpaste",
+      "category": "Personal Care",
+      "section": "store",
+      "unit": "140 g tube",
+      "price": 1950,
+      "icon": "🪥",
+      "description": "Fresh mint toothpaste"
+    },
+    {
+      "name": "Toothbrush",
+      "category": "Personal Care",
+      "section": "store",
+      "unit": "1 piece",
+      "price": 900,
+      "icon": "🪥",
+      "description": "Soft bristle toothbrush"
+    },
+    {
+      "name": "Body lotion",
+      "category": "Personal Care",
+      "section": "store",
+      "unit": "400 ml",
+      "price": 4350,
+      "icon": "🧴",
+      "description": "Daily moisturizing lotion"
+    },
+    {
+      "name": "Shampoo",
+      "category": "Personal Care",
+      "section": "store",
+      "unit": "400 ml",
+      "price": 3200,
+      "icon": "🧴",
+      "description": "Gentle hair cleanser"
+    },
+    {
+      "name": "Deodorant",
+      "category": "Personal Care",
+      "section": "store",
+      "unit": "50 ml roll-on",
+      "price": 2600,
+      "icon": "🧴",
+      "description": "Daily personal care"
+    },
+    {
+      "name": "Sanitary pads",
+      "category": "Personal Care",
+      "section": "store",
+      "unit": "1 pack",
+      "price": 1850,
+      "icon": "🩷",
+      "description": "Personal hygiene essentials"
+    },
+    {
+      "name": "Toilet tissue",
+      "category": "Personal Care",
+      "section": "store",
+      "unit": "4-roll pack",
+      "price": 2000,
+      "icon": "🧻",
+      "description": "Soft bathroom tissue"
+    },
+    {
+      "name": "Laundry detergent",
+      "category": "Home & Cleaning",
+      "section": "store",
+      "unit": "500 g pack",
+      "price": 1400,
+      "icon": "🧺",
+      "description": "Powdered laundry detergent"
+    },
+    {
+      "name": "Dishwashing liquid",
+      "category": "Home & Cleaning",
+      "section": "store",
+      "unit": "500 ml",
+      "price": 1500,
+      "icon": "🧽",
+      "description": "Liquid dish detergent"
+    },
+    {
+      "name": "Bleach",
+      "category": "Home & Cleaning",
+      "section": "store",
+      "unit": "1 litre",
+      "price": 1200,
+      "icon": "🫧",
+      "description": "Household disinfecting bleach"
+    },
+    {
+      "name": "Floor cleaner",
+      "category": "Home & Cleaning",
+      "section": "store",
+      "unit": "1 litre",
+      "price": 1900,
+      "icon": "🧴",
+      "description": "Multi-surface floor cleaner"
+    },
+    {
+      "name": "Kitchen sponge",
+      "category": "Home & Cleaning",
+      "section": "store",
+      "unit": "Pack of 3",
+      "price": 700,
+      "icon": "🧽",
+      "description": "Cleaning sponge set"
+    },
+    {
+      "name": "Bin liners",
+      "category": "Home & Cleaning",
+      "section": "store",
+      "unit": "Pack of 20",
+      "price": 1850,
+      "icon": "🗑️",
+      "description": "Durable trash bin liners"
+    },
+    {
+      "name": "Paper towels",
+      "category": "Home & Cleaning",
+      "section": "store",
+      "unit": "2-roll pack",
+      "price": 2400,
+      "icon": "🧻",
+      "description": "Absorbent kitchen towels"
+    },
+    {
+      "name": "Air freshener",
+      "category": "Home & Cleaning",
+      "section": "store",
+      "unit": "300 ml spray",
+      "price": 2950,
+      "icon": "🌸",
+      "description": "Room fragrance spray"
+    },
+    {
+      "name": "Jollof rice",
+      "category": "Rice & Main Meals",
+      "section": "restaurant",
+      "unit": "1 plate",
+      "price": 2500,
       "icon": "🍛",
-      "description": "Ask the business for its actual daily menu",
-      "price": null
+      "description": "Tomato-spiced Nigerian jollof rice",
+      "tag": "Bestseller"
     },
     {
-      "name": "Soup and swallow idea",
-      "category": "Eatery",
+      "name": "Fried rice",
+      "category": "Rice & Main Meals",
+      "section": "restaurant",
+      "unit": "1 plate",
+      "price": 2700,
+      "icon": "🍚",
+      "description": "Vegetable fried rice",
+      "tag": "Popular"
+    },
+    {
+      "name": "White rice & stew",
+      "category": "Rice & Main Meals",
+      "section": "restaurant",
+      "unit": "1 plate",
+      "price": 2300,
+      "icon": "🍛",
+      "description": "Steamed rice with tomato stew"
+    },
+    {
+      "name": "Ofada rice & ayamase",
+      "category": "Rice & Main Meals",
+      "section": "restaurant",
+      "unit": "1 plate",
+      "price": 3900,
+      "icon": "🍛",
+      "description": "Local rice served with pepper sauce"
+    },
+    {
+      "name": "Beans & fried plantain",
+      "category": "Rice & Main Meals",
+      "section": "restaurant",
+      "unit": "1 plate",
+      "price": 2600,
+      "icon": "🥘",
+      "description": "Soft cooked beans with sweet plantain"
+    },
+    {
+      "name": "Yam porridge",
+      "category": "Rice & Main Meals",
+      "section": "restaurant",
+      "unit": "1 bowl",
+      "price": 2650,
       "icon": "🍲",
-      "description": "Sample eatery listing, not a verified menu",
-      "price": null
+      "description": "Yam cooked in savory palm-oil sauce"
+    },
+    {
+      "name": "Stir-fried spaghetti",
+      "category": "Rice & Main Meals",
+      "section": "restaurant",
+      "unit": "1 plate",
+      "price": 2500,
+      "icon": "🍝",
+      "description": "Spaghetti with vegetables and spice"
+    },
+    {
+      "name": "Egusi soup & eba",
+      "category": "Soups & Swallow",
+      "section": "restaurant",
+      "unit": "1 serving",
+      "price": 3800,
+      "icon": "🍲",
+      "description": "Ground melon seed soup with eba",
+      "tag": "Popular"
+    },
+    {
+      "name": "Ogbono soup & semo",
+      "category": "Soups & Swallow",
+      "section": "restaurant",
+      "unit": "1 serving",
+      "price": 3900,
+      "icon": "🥣",
+      "description": "Ogbono soup with semolina swallow"
+    },
+    {
+      "name": "Okra soup & eba",
+      "category": "Soups & Swallow",
+      "section": "restaurant",
+      "unit": "1 serving",
+      "price": 3500,
+      "icon": "🍲",
+      "description": "Fresh okra soup and cassava swallow"
+    },
+    {
+      "name": "Vegetable soup & fufu",
+      "category": "Soups & Swallow",
+      "section": "restaurant",
+      "unit": "1 serving",
+      "price": 4000,
+      "icon": "🥬",
+      "description": "Leafy vegetable soup and fufu"
+    },
+    {
+      "name": "Afang soup & eba",
+      "category": "Soups & Swallow",
+      "section": "restaurant",
+      "unit": "1 serving",
+      "price": 4200,
+      "icon": "🍲",
+      "description": "Traditional afang soup"
+    },
+    {
+      "name": "Bitterleaf soup & pounded yam",
+      "category": "Soups & Swallow",
+      "section": "restaurant",
+      "unit": "1 serving",
+      "price": 4600,
+      "icon": "🥘",
+      "description": "Traditional bitterleaf soup and swallow"
+    },
+    {
+      "name": "Grilled chicken",
+      "category": "Grills & Proteins",
+      "section": "restaurant",
+      "unit": "1 portion",
+      "price": 3500,
+      "icon": "🍗",
+      "description": "Spiced grilled chicken portion",
+      "tag": "Popular"
+    },
+    {
+      "name": "Peppered chicken",
+      "category": "Grills & Proteins",
+      "section": "restaurant",
+      "unit": "1 portion",
+      "price": 3700,
+      "icon": "🍗",
+      "description": "Chicken coated in pepper sauce"
+    },
+    {
+      "name": "Fried fish",
+      "category": "Grills & Proteins",
+      "section": "restaurant",
+      "unit": "1 piece",
+      "price": 4200,
+      "icon": "🐟",
+      "description": "Seasoned fish, fried until golden"
+    },
+    {
+      "name": "Grilled fish",
+      "category": "Grills & Proteins",
+      "section": "restaurant",
+      "unit": "1 portion",
+      "price": 5200,
+      "icon": "🐟",
+      "description": "Marinated flame-grilled fish"
+    },
+    {
+      "name": "Beef in stew",
+      "category": "Grills & Proteins",
+      "section": "restaurant",
+      "unit": "1 portion",
+      "price": 1600,
+      "icon": "🥩",
+      "description": "Tender beef in tomato stew"
+    },
+    {
+      "name": "Goat meat pepper soup",
+      "category": "Grills & Proteins",
+      "section": "restaurant",
+      "unit": "1 bowl",
+      "price": 4250,
+      "icon": "🍲",
+      "description": "Aromatic pepper soup"
+    },
+    {
+      "name": "Moi moi",
+      "category": "Grills & Proteins",
+      "section": "restaurant",
+      "unit": "1 wrap",
+      "price": 1100,
+      "icon": "🫘",
+      "description": "Steamed bean pudding"
+    },
+    {
+      "name": "Fried plantain",
+      "category": "Grills & Proteins",
+      "section": "restaurant",
+      "unit": "1 side",
+      "price": 900,
+      "icon": "🍌",
+      "description": "Sweet golden plantain slices"
+    },
+    {
+      "name": "Coleslaw",
+      "category": "Grills & Proteins",
+      "section": "restaurant",
+      "unit": "1 side",
+      "price": 950,
+      "icon": "🥗",
+      "description": "Crunchy cabbage and carrot salad"
+    },
+    {
+      "name": "Akara",
+      "category": "Breakfast & Pastries",
+      "section": "restaurant",
+      "unit": "3 pieces",
+      "price": 950,
+      "icon": "🧆",
+      "description": "Golden fried bean fritters"
+    },
+    {
+      "name": "Pap (ogi)",
+      "category": "Breakfast & Pastries",
+      "section": "restaurant",
+      "unit": "1 bowl",
+      "price": 800,
+      "icon": "🥣",
+      "description": "Warm fermented corn porridge"
+    },
+    {
+      "name": "Yam & egg sauce",
+      "category": "Breakfast & Pastries",
+      "section": "restaurant",
+      "unit": "1 plate",
+      "price": 2700,
+      "icon": "🍳",
+      "description": "Boiled yam with egg and tomato sauce"
+    },
+    {
+      "name": "Meat pie",
+      "category": "Breakfast & Pastries",
+      "section": "restaurant",
+      "unit": "1 piece",
+      "price": 1450,
+      "icon": "🥟",
+      "description": "Baked meat-filled pastry",
+      "tag": "Popular"
+    },
+    {
+      "name": "Sausage roll",
+      "category": "Breakfast & Pastries",
+      "section": "restaurant",
+      "unit": "1 piece",
+      "price": 1200,
+      "icon": "🥐",
+      "description": "Golden savoury pastry"
+    },
+    {
+      "name": "Puff puff",
+      "category": "Breakfast & Pastries",
+      "section": "restaurant",
+      "unit": "5 pieces",
+      "price": 950,
+      "icon": "🍩",
+      "description": "Soft fried dough balls"
+    },
+    {
+      "name": "Chicken shawarma",
+      "category": "Breakfast & Pastries",
+      "section": "restaurant",
+      "unit": "1 wrap",
+      "price": 3750,
+      "icon": "🌯",
+      "description": "Grilled chicken and vegetables in a wrap"
+    },
+    {
+      "name": "Chilled bottled water",
+      "category": "Restaurant Drinks",
+      "section": "restaurant",
+      "unit": "75 cl bottle",
+      "price": 400,
+      "icon": "💧",
+      "description": "Refreshingly chilled water"
+    },
+    {
+      "name": "Cola soft drink",
+      "category": "Restaurant Drinks",
+      "section": "restaurant",
+      "unit": "50 cl bottle",
+      "price": 700,
+      "icon": "🥤",
+      "description": "Classic cola"
+    },
+    {
+      "name": "Malt drink",
+      "category": "Restaurant Drinks",
+      "section": "restaurant",
+      "unit": "33 cl can",
+      "price": 1050,
+      "icon": "🥤",
+      "description": "Non-alcoholic malt drink"
+    },
+    {
+      "name": "Zobo drink",
+      "category": "Restaurant Drinks",
+      "section": "restaurant",
+      "unit": "50 cl bottle",
+      "price": 1300,
+      "icon": "🧃",
+      "description": "Chilled hibiscus drink"
+    },
+    {
+      "name": "Fresh fruit blend",
+      "category": "Restaurant Drinks",
+      "section": "restaurant",
+      "unit": "1 glass",
+      "price": 2200,
+      "icon": "🍹",
+      "description": "Fruit drink idea; variety to be confirmed"
+    },
+    {
+      "name": "Yoghurt",
+      "category": "Restaurant Drinks",
+      "section": "restaurant",
+      "unit": "50 cl bottle",
+      "price": 1550,
+      "icon": "🥛",
+      "description": "Chilled dairy drink"
     }
   ]
 }
