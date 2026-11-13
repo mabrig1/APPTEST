@@ -42,3 +42,13 @@ The intended domain is **https://apptest.mabrigkorie.org** (requires Cloudflare 
 Quick API setup and copy-ready test commands are in docs/CLOUDFLARE_SETUP.md under **Copy-ready non-secret settings** and **Test the API**.
 
 **Production deployment fix:** See [docs/WORKERS_DEPLOY.md](docs/WORKERS_DEPLOY.md). The connected app is a Cloudflare Worker using `npx wrangler deploy` (not a Pages project). The PR includes the real Worker entrypoint, assets directory, and a bundling dry-run in CI.
+
+## BOSAL STORE storefront demonstration (November 13, 2026)
+
+- **BOSAL STORE** is the initial landing page at the root domain, not the APPTEST marketing overview.
+- **BOSAL RESTAURANT** is a separate shopping department with Nigerian rice meals, soups and swallow, grills, snacks and drinks.
+- **211 illustrative entries**: 176 supermarket goods, 35 restaurant menu items, 24 categories; sample pack sizes, descriptions, naira prices and labels.
+- Category filters, text search, price/name sorting, show-more pagination, mixed store-and-restaurant basket, demonstration WhatsApp enquiry, responsive product cards.
+- APPTEST and MABRIG Technologies remain available as the underlying proposal service, editor, and footer credit. The first page sells the client's brand.
+
+**Honesty and safety:** These are **demo prices and proposed stock**, not verified BOSAL inventory or live orders. The shop is for client review before owner approval. Product images are illustrative icons until approved packshots are provided; WhatsApp produces a sample enquiry, not an order confirmation. No real payment or account collection exists.
