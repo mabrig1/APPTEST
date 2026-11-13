@@ -1,0 +1,70 @@
+{
+  "version": 1,
+  "name": "BOSAL STORES",
+  "sector": "Supermarket / Eatery",
+  "headline": "Groceries, household essentials and a neighborhood eatery at Hilltop, Nsukka.",
+  "description": "An illustrative digital storefront for BOSAL STORES, serving students and local residents near the University of Nigeria, Nsukka. Menu, products, stock and pricing await owner approval.",
+  "owner": "AGBO SALVATION, O.",
+  "phone": "09063866923",
+  "address": "No 12 Hill Top, opposite Trinity Lodge, Nsukka, Enugu State, Nigeria",
+  "color": "#15735c",
+  "status": "client-review",
+  "offerings": [
+    {
+      "name": "Daily rice essentials",
+      "category": "Groceries",
+      "icon": "🍚",
+      "description": "Illustrative grocery category",
+      "price": null
+    },
+    {
+      "name": "Bread and snacks",
+      "category": "Groceries",
+      "icon": "🥖",
+      "description": "Example daily essentials",
+      "price": null
+    },
+    {
+      "name": "Fresh produce",
+      "category": "Groceries",
+      "icon": "🥬",
+      "description": "Illustrative fruit and vegetable selection",
+      "price": null
+    },
+    {
+      "name": "Breakfast items",
+      "category": "Groceries",
+      "icon": "🥚",
+      "description": "Sample household food products",
+      "price": null
+    },
+    {
+      "name": "Soft drinks and water",
+      "category": "Drinks",
+      "icon": "🥤",
+      "description": "Example chilled drinks category",
+      "price": null
+    },
+    {
+      "name": "Household cleaning supplies",
+      "category": "Household",
+      "icon": "🧼",
+      "description": "Illustrative household essentials",
+      "price": null
+    },
+    {
+      "name": "Rice meal idea",
+      "category": "Eatery",
+      "icon": "🍛",
+      "description": "Ask the business for its actual daily menu",
+      "price": null
+    },
+    {
+      "name": "Soup and swallow idea",
+      "category": "Eatery",
+      "icon": "🍲",
+      "description": "Sample eatery listing, not a verified menu",
+      "price": null
+    }
+  ]
+}

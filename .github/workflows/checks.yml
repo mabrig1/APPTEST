@@ -1,0 +1,28 @@
+name: APPTEST checks
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate JavaScript
+        run: |
+          node --check public/app.js
+          node --check worker/index.js
+          node --check functions/_lib/common.js
+          node --check functions/api/status.js
+          node --check functions/api/lead.js
+          node --check functions/api/proposal.js
+          node --check functions/api/test-connections.js
+      - name: Run offline tests
+        run: node --test tests/*.mjs
+      - name: Cloudflare Worker bundling dry-run (no deploy)
+        run: npx --yes wrangler@4.161.0 deploy --dry-run --outdir=.wrangler-ci-check
