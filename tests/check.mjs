@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {onRequestGet as status} from '../functions/api/status.js';
+import worker from '../worker/index.js';
 import {onRequestPost as testConnections} from '../functions/api/test-connections.js';
 import {onRequestPost as lead} from '../functions/api/lead.js';
 import {onRequestPost as proposal} from '../functions/api/proposal.js';
@@ -141,4 +142,28 @@ test('owner connectivity test never generates AI or emails, but verifies OpenRou
     assert.match(body.resend.status,/Key present/);
     assert.doesNotMatch(JSON.stringify(body),/fake-resend-key|fake-openrouter-key|secret-label/);
   }finally{globalThis.fetch=prev;}
+});
+
+test('Cloudflare Worker responds on public API and delegates storefront assets',async()=>{
+  const requests=[];
+  const env={APPTEST_PUBLIC_URL:'https://apptest.mabrigkorie.org',
+    ASSETS:{fetch:async request=>{
+      requests.push(new URL(request.url).pathname);
+      return new Response('<h1>APPTEST website</h1>',{status:200,headers:{'content-type':'text/html'}});
+    }}};
+  const health=await worker.fetch(new Request('https://apptest.mabrigkorie.org/api/status'),env,{});
+  assert.equal(health.status,200);
+  assert.equal((await health.json()).app,'APPTEST');
+  assert.deepEqual(requests,[]);
+  const page=await worker.fetch(new Request('https://apptest.mabrigkorie.org/'),env,{});
+  assert.equal(page.status,200);
+  assert.match(await page.text(),/APPTEST website/);
+  assert.deepEqual(requests,['/']);
+});
+test('Worker blocks unsupported API methods and does not route them to static assets',async()=>{
+  let assetCalls=0;
+  const env={ASSETS:{fetch:async()=>{assetCalls++;return new Response('public');}}};
+  const result=await worker.fetch(new Request('https://apptest.mabrigkorie.org/api/proposal'),env,{});
+  assert.equal(result.status,405);
+  assert.equal(assetCalls,0);
 });

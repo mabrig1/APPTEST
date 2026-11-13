@@ -11,7 +11,7 @@ APPTEST displays one active client prototype at a time. Show the client a mobile
 - Public marketing page, interactive client storefront, proposal studio and handover guidance.
 - Search, category filters, demo-only basket, WhatsApp enquiry drafts.
 - Local business proposal designer with four starter business templates, instant previews and JSON export/import.
-- Cloudflare Pages + Pages Functions-ready layout: public assets under **public/**, private server handlers under **functions/**.
+- Cloudflare Worker static-assets layout: public assets under **public/**, Worker API router under **worker/**, reusable private handlers under **functions/**.
 - Optional owner-protected OpenRouter AI draft endpoint, hardcoded to **openrouter/free**.
 - Optional Resend email enquiry endpoint with Cloudflare Turnstile server verification and consent.
 - Fail-closed integrations: demo remains available without secrets; email/AI disabled until ready.
@@ -40,3 +40,5 @@ The public proposal studio is **local to your browser only**, not a private admi
 The intended domain is **https://apptest.mabrigkorie.org** (requires Cloudflare Pages custom-domain attachment). A safe, commit-ready non-secret environment template is at **config/env.example**. Owner-only API connectivity testing will be available in the Proposal Studio after you set APPTEST_ADMIN_TOKEN securely in Cloudflare; OpenRouter/Resend are disabled until their real credentials and verification settings are added.
 
 Quick API setup and copy-ready test commands are in docs/CLOUDFLARE_SETUP.md under **Copy-ready non-secret settings** and **Test the API**.
+
+**Production deployment fix:** See [docs/WORKERS_DEPLOY.md](docs/WORKERS_DEPLOY.md). The connected app is a Cloudflare Worker using `npx wrangler deploy` (not a Pages project). The PR includes the real Worker entrypoint, assets directory, and a bundling dry-run in CI.

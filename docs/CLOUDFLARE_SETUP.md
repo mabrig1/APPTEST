@@ -1,3 +1,9 @@
+# IMPORTANT: Deployment target changed to Cloudflare Worker
+
+The Cloudflare account screenshot confirms the existing APPTEST service is a **Worker** using **npx wrangler deploy**, not a Cloudflare Pages project. For the current release, follow [WORKERS_DEPLOY.md](WORKERS_DEPLOY.md) instead of the older Pages instructions below. Worker secrets belong under **Workers & Pages → apptest → Settings → Variables and Secrets**. The current configuration preserves dashboard variables with `keep_vars = true`.
+
+---
+
 # Deploy APPTEST on Cloudflare Pages Free
 
 Status: **prepared in a GitHub review branch; not yet deployed or connected to a Cloudflare account**. No real keys, paid providers, DNS records or production settings were changed.
