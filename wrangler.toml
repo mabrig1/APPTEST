@@ -1,3 +1,7 @@
 name = "apptest"
 compatibility_date = "2026-11-13"
 pages_build_output_dir = "./public"
+
+# Public, non-secret metadata. Actual API keys must only be entered as Cloudflare encrypted secrets.
+[vars]
+APPTEST_PUBLIC_URL = "https://apptest.mabrigkorie.org"

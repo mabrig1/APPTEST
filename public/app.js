@@ -280,6 +280,28 @@
     }catch(err){$('#ai-result').textContent=err.message||'AI unavailable. Continue in the manual editor.';}
     finally{button.disabled=false;$('#ai-token').value='';}
   }
+  async function checkAPIConnections(){
+    const token=$('#ai-token').value.trim();
+    if(token.length<24){notice('Enter the private owner access token in the field above.');return;}
+    const btn=$('#api-check');btn.disabled=true;
+    $('#api-check-result').textContent='Checking server configuration…';
+    try{
+      const response=await fetch('/api/test-connections',{
+        method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+        body:JSON.stringify({provider:'all'})
+      });
+      const result=await response.json();
+      if(!response.ok)throw new Error(result.error||'Connection test failed.');
+      const or=result.openrouter,mail=result.resend;
+      $('#api-check-result').textContent=[
+        'OpenRouter: '+or.status,
+        'Resend: '+mail.status,
+        'Site: '+(result.siteUrl||'not configured'),
+        'No emails were sent and no AI text was generated.'
+      ].join('\n');
+    }catch(err){$('#api-check-result').textContent=err.message||'Connection check unavailable.';}
+    finally{btn.disabled=false;$('#ai-token').value='';}
+  }
   function setupEvents(){
     $$('[data-page],[data-go]').forEach(b=>b.addEventListener('click',()=>{
       location.hash=b.dataset.page||b.dataset.go;
@@ -339,6 +361,7 @@
       'Hello MABRIG Technologies. I would like a proposal for a business website or app.'));
     $('#lead-form').addEventListener('submit',sendLead);
     $('#ai-generate').addEventListener('click',generateProposal);
+    $('#api-check').addEventListener('click',checkAPIConnections);
     $('#download-brief').addEventListener('click',()=>window.print());
     window.addEventListener('hashchange',route);
   }

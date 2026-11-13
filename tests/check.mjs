@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {onRequestGet as status} from '../functions/api/status.js';
+import {onRequestPost as testConnections} from '../functions/api/test-connections.js';
 import {onRequestPost as lead} from '../functions/api/lead.js';
 import {onRequestPost as proposal} from '../functions/api/proposal.js';
 
@@ -103,4 +104,41 @@ test('AI always selects free model and never leaks key in response',async()=>{
     assert.ok(payload.max_tokens<=420);
     assert.doesNotMatch(JSON.stringify(await result.json()),/fake-openrouter-key/);
   }finally{globalThis.fetch=previous;}
+});
+
+test('configured APPTEST domain is returned without secrets',async()=>{
+  const body=await (await status({env:{APPTEST_PUBLIC_URL:'https://apptest.mabrigkorie.org'}})).json();
+  assert.equal(body.siteUrl,'https://apptest.mabrigkorie.org');
+  assert.equal(body.apiVersion,'v1');
+});
+test('owner-only connectivity test denies unauthenticated requests',async()=>{
+  assert.equal((await testConnections(req('/api/test-connections',{}))).status,401);
+  assert.equal((await testConnections(req('/api/test-connections',{APPTEST_ADMIN_TOKEN:'a'.repeat(64)}, {},{
+    Authorization:'Bearer '+'b'.repeat(64)
+  }))).status,401);
+  assert.equal((await testConnections(req('/api/test-connections',{APPTEST_ADMIN_TOKEN:'a'.repeat(64)}, {},{
+    Origin:'https://untrusted.example',Authorization:'Bearer '+'a'.repeat(64)
+  }))).status,403);
+});
+test('owner connectivity test never generates AI or emails, but verifies OpenRouter key',async()=>{
+  const prev=globalThis.fetch;const calls=[];
+  globalThis.fetch=async(url,opt)=>{
+    calls.push({url,opt});
+    assert.equal(url,'https://openrouter.ai/api/v1/key');
+    assert.equal(opt.method,'GET');
+    return new Response(JSON.stringify({data:{label:'secret-label',usage:0}}),{status:200});
+  };
+  try{
+    const env={...aiEnv,RESEND_API_KEY:'fake-resend-key',APPTEST_PUBLIC_URL:'https://apptest.mabrigkorie.org'};
+    const result=await testConnections(req('/api/test-connections',env,{provider:'all'},{
+      Authorization:'Bearer '+env.APPTEST_ADMIN_TOKEN
+    }));
+    assert.equal(result.status,200);
+    assert.equal(calls.length,1);
+    const body=await result.json();
+    assert.equal(body.siteUrl,'https://apptest.mabrigkorie.org');
+    assert.match(body.openrouter.status,/Authenticated successfully/);
+    assert.match(body.resend.status,/Key present/);
+    assert.doesNotMatch(JSON.stringify(body),/fake-resend-key|fake-openrouter-key|secret-label/);
+  }finally{globalThis.fetch=prev;}
 });

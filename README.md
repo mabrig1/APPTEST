@@ -33,3 +33,8 @@ Follow **docs/CLOUDFLARE_SETUP.md** before using API keys or connecting GitHub. 
 ## Business security boundaries
 
 The public proposal studio is **local to your browser only**, not a private admin service or shared order database. Owner-only AI access requires a secure token, but studio edits cannot publish automatically. No payments or orders are processed. Never commit sensitive data, private briefs, API keys or customer records. Public Git history persists even after replacing the demonstration client.
+
+
+### Current deployment target / API onboarding
+
+The intended domain is **https://apptest.mabrigkorie.org** (requires Cloudflare Pages custom-domain attachment). A safe, commit-ready non-secret environment template is at **config/env.example**. Owner-only API connectivity testing will be available in the Proposal Studio after you set APPTEST_ADMIN_TOKEN securely in Cloudflare; OpenRouter/Resend are disabled until their real credentials and verification settings are added.

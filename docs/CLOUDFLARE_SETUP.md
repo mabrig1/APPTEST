@@ -95,3 +95,17 @@ To roll back: select the last healthy deployment in Cloudflare Pages and confirm
 - Turnstile Siteverify: https://developers.cloudflare.com/turnstile/get-started/server-side-validation/
 - OpenRouter free variants: https://openrouter.ai/collections/free-models/
 - Resend free-tier quotas: https://resend.com/pricing
+
+
+## Confirmed project hostname and safe configuration (13 November 2026)
+
+- **APPTEST public hostname:** https://apptest.mabrigkorie.org
+- **Cloudflare Pages project name:** apptest (must be available in your account)
+- **Git repository:** mabrig1/APPTEST, with working changes on the review branch
+- **Publish directory:** public
+- **Non-secret project variable:** APPTEST_PUBLIC_URL=https://apptest.mabrigkorie.org is included in wrangler.toml.
+- **Template for the rest:** config/env.example includes AI_ENABLED=false, EMAIL_ENABLED=false, all required provider key *names* and blank placeholders.
+- **Do not put real secrets in wrangler.toml**. Configure encrypted OPENROUTER_API_KEY, RESEND_API_KEY, APPTEST_ADMIN_TOKEN and TURNSTILE_SECRET only after the Pages project is available. Configure the sender, recipient and TURNSTILE_SITE_KEY alongside them. AI_ENABLED and EMAIL_ENABLED are left disabled by default to prevent unintended billable/API requests.
+- Cloudflare Pages still needs the hostname to be added under **Custom domains → Set up a domain → apptest.mabrigkorie.org**. If the domain's DNS zone is already at Cloudflare, it normally configures the CNAME. Otherwise point a CNAME for "apptest" to the Cloudflare-assigned pages.dev hostname **after attaching the custom domain in Pages**. A code commit cannot change Cloudflare account or DNS settings by itself.
+- Server-side API endpoints are /api/status (safe public readiness), /api/proposal (owner-only free-model generation), /api/lead (Turnstile-protected email submissions), and /api/test-connections (owner-only provider connectivity check). The last endpoint calls OpenRouter's GET /api/v1/key metadata API when its key is configured and does NOT generate AI text or send email; Resend readiness is checked as configuration only. The owner token must be configured before use.
+- **No real credentials are embedded**. Do not text them into public code or upload a credential screenshot.
