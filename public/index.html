@@ -66,6 +66,26 @@
         <div><span class="mini muted">THE CURRENT SHOWCASE</span><h2 id="showcase-title">BOSAL STORES</h2><p class="muted" id="showcase-summary">A supermarket and eatery near the University of Nigeria, Nsukka.</p><div class="cta-row"><button class="button" data-go="demo">Try this prototype</button><button class="button secondary" data-go="handover">See deployment path</button></div></div>
         <div class="feature-note"><span class="pill">Concept preview • not a live store</span><strong style="margin-top:15px">Review. Refine. Launch.</strong><p>This site is for proposals. A final domain, secure business tools, verified products and any payment gateway belong in the separately launched production application.</p></div>
       </div></section>
+      <section class="section" id="request-enquiry" style="padding-top:10px">
+        <div class="wrap feature">
+          <div><span class="mini muted">GET A WEBSITE PROPOSAL</span><h2>Show your customers what comes next.</h2><p class="muted">Tell MABRIG Technologies what you need. Secure email submission is available only after the sender domain and Cloudflare verification are configured.</p><div class="cta-row"><button class="button" id="lead-whatsapp" type="button">Chat on WhatsApp ↗</button></div></div>
+          <div class="feature-note">
+            <strong>Request a proposal</strong><p id="lead-availability">Checking email availability… WhatsApp remains available.</p>
+            <form id="lead-form" style="margin-top:14px">
+              <div class="form-grid">
+                <label><span>Your name *</span><input class="field" id="lead-name" maxlength="100" required></label>
+                <label><span>Business name *</span><input class="field" id="lead-business" maxlength="120" required></label>
+                <label class="full"><span>Your email *</span><input class="field" id="lead-email" type="email" maxlength="254" required></label>
+                <label class="full"><span>Project details *</span><textarea class="field" id="lead-message" maxlength="1600" minlength="15" required placeholder="What should the new website do?"></textarea></label>
+                <label class="full" style="display:flex;align-items:flex-start;gap:8px"><input id="lead-consent" type="checkbox" required style="margin-top:6px"><span>I agree that these details may be emailed to MABRIG Technologies for responding to my enquiry. Please don't include confidential customer information.</span></label>
+                <div class="full" id="lead-turnstile"></div>
+                <div class="full"><button class="button" id="lead-submit" type="submit" disabled>Send enquiry securely</button></div>
+              </div>
+            </form>
+            <p role="status" aria-live="polite" id="lead-result" style="margin-top:9px"></p>
+          </div>
+        </div>
+      </section>
     </section>
     <section class="page" id="demo" hidden>
       <div class="demo-note"><div class="wrap">⚠ APPTEST PROTOTYPE — illustrative listings; no live stock, price, payment, delivery or order confirmation. Contact the business to verify actual offerings.</div></div>
@@ -116,6 +136,14 @@
               <input type="file" id="config-file" accept=".json,application/json" hidden>
             </div>
           </form>
+          <div class="instructions" id="ai-tool" style="margin-top:23px">
+            <strong>AI proposal assistant · owner only</strong>
+            <p>Uses OpenRouter's free-model router. The owner token is entered only for this request and is never saved in the browser. Draft output must be reviewed; it is never published automatically.</p>
+            <label style="display:block;margin:10px 0"><span style="display:block;font-weight:750">Owner access token</span><input type="password" class="field" id="ai-token" autocomplete="off" placeholder="Private owner token from Cloudflare secrets"></label>
+            <label style="display:block;margin:10px 0"><span style="display:block;font-weight:750">Business proposal brief</span><textarea class="field" id="ai-brief" maxlength="850" rows="4" placeholder="Describe the business, intended customers and desired website features. Do not enter confidential data."></textarea></label>
+            <button type="button" class="button sm" id="ai-generate" disabled>Generate AI proposal draft</button>
+            <p id="ai-result" aria-live="polite" style="white-space:pre-wrap;word-break:break-word;color:var(--ink);margin-top:10px"></p>
+          </div>
           <div class="notice">Changes made here only affect the current browser session. Publishing requires updating the repository’s <code>active-client.json</code> and a new deployment. A public editor is not secure administration.</div>
         </section>
         <aside class="preview-pane"><div class="studio-panel"><span class="mini muted">INSTANT CONCEPT</span><div class="draft-preview" style="margin-top:15px"><div class="draft-preview-top"><span class="mini">APPTEST SAMPLE WEBSITE</span><h3 id="draft-name"></h3><p id="draft-headline"></p></div><div class="draft-preview-body" id="draft-products"></div></div><p class="muted" style="margin-top:14px">Previewing a new draft does not replace the currently published client.</p><div class="editor-tools"><button class="button secondary" id="download-brief">Print proposal overview</button><button class="button secondary" data-go="demo">Open demo page</button></div></div><div class="instructions"><strong>Publish checklist</strong><p>1. Export the candidate JSON and retain a copy of the previous version.</p><p>2. Have the client review and approve names, images, menu, prices, address and public contact details.</p><p>3. Update <code>active-client.json</code> through a reviewed GitHub pull request. Verify the preview and only then publish.</p><p>4. When a client gets a separate domain, archive the handover materials privately and replace the active demo with the next approved client.</p></div></aside>

@@ -211,6 +211,75 @@
     a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
     setTimeout(()=>URL.revokeObjectURL(url),1500);
   }
+  let serviceStatus={email:false,ai:false,turnstileSiteKey:''};
+  let turnstileToken='',turnstileWidgetId=null;
+  async function loadServices(){
+    try{
+      const response=await fetch('/api/status',{cache:'no-store'});
+      if(!response.ok)throw new Error('Unavailable');
+      const data=await response.json();
+      serviceStatus=data?.services||serviceStatus;
+    }catch(_){serviceStatus={email:false,ai:false,turnstileSiteKey:''};}
+    $('#ai-generate').disabled=!serviceStatus.ai;
+    $('#lead-submit').disabled=!serviceStatus.email;
+    $('#lead-availability').textContent=serviceStatus.email
+      ? 'Secure email enquiries enabled. Please complete the verification below.'
+      : 'Email enquiries not configured yet. You can contact MABRIG Technologies on WhatsApp.';
+    if(serviceStatus.email&&serviceStatus.turnstileSiteKey)showTurnstile(serviceStatus.turnstileSiteKey);
+    $('#ai-result').textContent=serviceStatus.ai?'AI assistance ready for authorized owner use.':
+      'AI drafting is offline until free OpenRouter access and owner authorization are configured.';
+  }
+  function showTurnstile(sitekey){
+    const script=document.createElement('script');
+    script.src='https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+    script.async=true;script.defer=true;
+    script.onload=()=>{
+      if(!window.turnstile){$('#lead-availability').textContent='Verification unavailable. Please use WhatsApp.';return;}
+      turnstileWidgetId=window.turnstile.render('#lead-turnstile',{
+        sitekey,
+        callback:(token)=>{turnstileToken=token;},
+        'expired-callback':()=>{turnstileToken='';},
+        'error-callback':()=>{turnstileToken='';}
+      });
+    };
+    script.onerror=()=>{$('#lead-availability').textContent='Verification could not load. Please use WhatsApp.';};
+    document.head.appendChild(script);
+  }
+  async function sendLead(e){
+    e.preventDefault();
+    if(!serviceStatus.email||!turnstileToken){$('#lead-result').textContent='Complete the verification first, or use WhatsApp.';return;}
+    const btn=$('#lead-submit');btn.disabled=true;
+    $('#lead-result').textContent='Sending proposal enquiry…';
+    try{
+      const response=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name:$('#lead-name').value,business:$('#lead-business').value,email:$('#lead-email').value,
+          message:$('#lead-message').value,consent:$('#lead-consent').checked,turnstileToken})});
+      const data=await response.json();
+      if(!response.ok)throw new Error(data.error||'Service unavailable.');
+      $('#lead-result').textContent=data.message;
+      $('#lead-form').reset();turnstileToken='';
+    }catch(err){$('#lead-result').textContent=err.message||'Please use WhatsApp.';}
+    finally{
+      if(window.turnstile&&turnstileWidgetId!=null){window.turnstile.reset(turnstileWidgetId);turnstileToken='';}
+      btn.disabled=!serviceStatus.email;
+    }
+  }
+  async function generateProposal(){
+    if(!serviceStatus.ai){notice('AI is not configured yet.');return;}
+    const token=$('#ai-token').value.trim(),brief=$('#ai-brief').value.trim();
+    if(token.length<24){notice('Enter the private owner access token.');return;}
+    if(brief.length<25){notice('Enter a meaningful brief of at least 25 characters.');return;}
+    const button=$('#ai-generate');button.disabled=true;$('#ai-result').textContent='Generating an illustrative draft…';
+    try{
+      const response=await fetch('/api/proposal',{method:'POST',headers:{
+        'Content-Type':'application/json','Authorization':'Bearer '+token
+      },body:JSON.stringify({category:$('#f-sector').value,brief})});
+      const data=await response.json();
+      if(!response.ok)throw new Error(data.error||'The free AI service is unavailable.');
+      $('#ai-result').textContent=data.draft+'\n\n'+data.note;
+    }catch(err){$('#ai-result').textContent=err.message||'AI unavailable. Continue in the manual editor.';}
+    finally{button.disabled=false;$('#ai-token').value='';}
+  }
   function setupEvents(){
     $$('[data-page],[data-go]').forEach(b=>b.addEventListener('click',()=>{
       location.hash=b.dataset.page||b.dataset.go;
@@ -266,6 +335,10 @@
       catch(err){notice('Cannot import: '+err.message);}
     });
     $('#reset-config').addEventListener('click',()=>{draftOverride=null;cart={};populateForm(published);syncActive();notice('Restored published client in this browser.');});
+    $('#lead-whatsapp').addEventListener('click',()=>whatsapp(MABRIG_CONTACT,
+      'Hello MABRIG Technologies. I would like a proposal for a business website or app.'));
+    $('#lead-form').addEventListener('submit',sendLead);
+    $('#ai-generate').addEventListener('click',generateProposal);
     $('#download-brief').addEventListener('click',()=>window.print());
     window.addEventListener('hashchange',route);
   }
@@ -278,5 +351,5 @@
     active=published;populateForm(published);syncActive();
   }
   $('#year').textContent=new Date().getFullYear();
-  setupEvents();loadPublished();route();
+  setupEvents();loadPublished();loadServices();route();
 })();
