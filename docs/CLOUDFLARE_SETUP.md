@@ -109,3 +109,51 @@ To roll back: select the last healthy deployment in Cloudflare Pages and confirm
 - Cloudflare Pages still needs the hostname to be added under **Custom domains → Set up a domain → apptest.mabrigkorie.org**. If the domain's DNS zone is already at Cloudflare, it normally configures the CNAME. Otherwise point a CNAME for "apptest" to the Cloudflare-assigned pages.dev hostname **after attaching the custom domain in Pages**. A code commit cannot change Cloudflare account or DNS settings by itself.
 - Server-side API endpoints are /api/status (safe public readiness), /api/proposal (owner-only free-model generation), /api/lead (Turnstile-protected email submissions), and /api/test-connections (owner-only provider connectivity check). The last endpoint calls OpenRouter's GET /api/v1/key metadata API when its key is configured and does NOT generate AI text or send email; Resend readiness is checked as configuration only. The owner token must be configured before use.
 - **No real credentials are embedded**. Do not text them into public code or upload a credential screenshot.
+
+
+## Copy-ready non-secret settings
+
+In Cloudflare Pages → Settings → Variables and Secrets, select Preview first. These two non-secret *feature flags* can be added now and left disabled:
+
+    AI_ENABLED = false
+    EMAIL_ENABLED = false
+
+The public URL is already in wrangler.toml:
+
+    APPTEST_PUBLIC_URL = https://apptest.mabrigkorie.org
+
+**Add later (encrypted secrets):** OPENROUTER_API_KEY, RESEND_API_KEY, APPTEST_ADMIN_TOKEN, TURNSTILE_SECRET.
+
+**Add later (plain configuration):** RESEND_FROM_EMAIL, RESEND_TO_EMAIL, TURNSTILE_SITE_KEY.
+
+All variable names, blank secret slots and default values are available in config/env.example. Do not paste placeholder strings into the Cloudflare encrypted secret fields; only supply real keys when ready.
+
+## Test the API after Cloudflare Pages is online
+
+**Public readiness (safe; uses no key):**
+
+    curl -i https://apptest.mabrigkorie.org/api/status
+
+Expected initially: JSON with siteUrl = https://apptest.mabrigkorie.org and both service availability flags false. A 404 means Pages Functions may not have deployed; check that Git integration uses the repository's root-level functions directory and public is the output directory.
+
+**Owner-only connection test (after adding APPTEST_ADMIN_TOKEN):**
+
+    curl -X POST https://apptest.mabrigkorie.org/api/test-connections \
+      -H "Origin: https://apptest.mabrigkorie.org" \
+      -H "Content-Type: application/json" \
+      -H "Authorization: Bearer YOUR_PRIVATE_OWNER_TOKEN" \
+      -d '{"provider":"all"}'
+
+This returns only sanitized status text, not any key or provider account metadata. It checks OpenRouter API key authentication by calling GET /api/v1/key only when that key is present; it does NOT generate text or use paid AI models. Resend status is configuration-only and does NOT send email. Confirm real Resend sending using the consented website enquiry form after Turnstile and sender verification are set up.
+
+**Real AI test (after OpenRouter and owner token are ready, and AI_ENABLED=true):**
+
+    curl -X POST https://apptest.mabrigkorie.org/api/proposal \
+      -H "Origin: https://apptest.mabrigkorie.org" \
+      -H "Content-Type: application/json" \
+      -H "Authorization: Bearer YOUR_PRIVATE_OWNER_TOKEN" \
+      -d '{"category":"Supermarket / Eatery","brief":"Create a mobile-friendly product browsing concept for a small student-focused supermarket in Nsukka."}'
+
+The AI endpoint always requests model=openrouter/free, but a real invocation may consume a provider free-quota request. Never send the private owner token in the public APPTEST chat form or website proposal JSON.
+
+Security note: APPTEST's browser API routes accept same-origin requests from the live website; cross-site browser calls are intentionally rejected. Other business websites should not be given the owner's private API access token. A separate, scoped partner API would require explicit authentication, quotas and a defined client use case.

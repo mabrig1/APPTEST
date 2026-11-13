@@ -38,3 +38,5 @@ The public proposal studio is **local to your browser only**, not a private admi
 ### Current deployment target / API onboarding
 
 The intended domain is **https://apptest.mabrigkorie.org** (requires Cloudflare Pages custom-domain attachment). A safe, commit-ready non-secret environment template is at **config/env.example**. Owner-only API connectivity testing will be available in the Proposal Studio after you set APPTEST_ADMIN_TOKEN securely in Cloudflare; OpenRouter/Resend are disabled until their real credentials and verification settings are added.
+
+Quick API setup and copy-ready test commands are in docs/CLOUDFLARE_SETUP.md under **Copy-ready non-secret settings** and **Test the API**.

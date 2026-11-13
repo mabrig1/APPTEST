@@ -20,5 +20,6 @@ jobs:
           node --check functions/api/status.js
           node --check functions/api/lead.js
           node --check functions/api/proposal.js
+          node --check functions/api/test-connections.js
       - name: Run offline tests
         run: node --test tests/*.mjs
