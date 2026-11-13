@@ -204,12 +204,12 @@
   function renderCart(){
     const products=active.offerings.filter(p=>cart[p.id]>0);
     $('#cart-items').innerHTML=products.length?products.map(p=>
-      '<div class="cart-line"><div><strong>'+escapeHTML(p.name)+'</strong><small>'+(p.price==null?'Price not supplied':money(p.price)+' indicative')+'</small></div><div class="qty"><button type="button" data-qty="'+escapeHTML(p.id)+'" data-delta="-1" aria-label="Remove one '+escapeHTML(p.name)+'">−</button><strong>'+cart[p.id]+'</strong><button type="button" data-qty="'+escapeHTML(p.id)+'" data-delta="1" aria-label="Add one '+escapeHTML(p.name)+'">+</button></div></div>'
+      '<div class="cart-line"><div><strong>'+escapeHTML(p.name)+'</strong><small>'+escapeHTML(p.unit||'1 item')+' · '+(p.price==null?'Price not supplied':money(p.price)+' SAMPLE price')+'</small></div><div class="qty"><button type="button" data-qty="'+escapeHTML(p.id)+'" data-delta="-1" aria-label="Remove one '+escapeHTML(p.name)+'">−</button><strong>'+cart[p.id]+'</strong><button type="button" data-qty="'+escapeHTML(p.id)+'" data-delta="1" aria-label="Add one '+escapeHTML(p.name)+'">+</button></div></div>'
     ).join(''):'<p class="muted">Your demo basket is empty. Add example offerings to try the concept.</p>';
     let total=0;let missing=0;
     products.forEach(p=>{if(p.price==null)missing++;else total+=(p.price*cart[p.id]);});
     $('#cart-summary').textContent=products.length?
-      'Indicative known-price subtotal: '+money(total)+(missing?' + '+missing+' item type(s) without prices.':''):'No demo items selected.';
+      'Sample subtotal (not payable): '+money(total)+(missing?' + '+missing+' item type(s) without prices.':''):'No demo items selected.';
     $('#cart-whatsapp').disabled=!products.length;
     updateCartBadge();
   }
@@ -361,16 +361,24 @@
       'Hello MABRIG Technologies. Feedback about the APPTEST prototype for '+active.name+':\n\n[My feedback]'));
     $('#request-proposal').addEventListener('click',()=>whatsapp(MABRIG_CONTACT,
       'Hello MABRIG Technologies. I would like an interactive website or app proposal for my business.'));
-    $('#search').addEventListener('input',e=>{search=e.target.value;renderItems();});
-    $('#categories').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;filter=b.dataset.category;renderCategories();renderItems();});
-    $('#items').addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(!b)return;const p=active.offerings.find(x=>x.id===b.dataset.add);if(!p)return;cart[p.id]=Math.min(99,(cart[p.id]||0)+1);updateCartBadge();notice('Added to demonstration basket: '+p.name);});
+    $('#search').addEventListener('input',e=>{search=e.target.value;visibleLimit=24;renderItems();});
+    $('#section-switch').addEventListener('click',e=>{
+      const b=e.target.closest('[data-store-section]');if(!b)return;
+      shopSection=b.dataset.storeSection;filter='All';search='';visibleLimit=24;sortOrder='featured';
+      $('#search').value='';$('#sort-products').value='featured';
+      syncSectionButtons();renderCategories();renderItems();
+    });
+    $('#sort-products').addEventListener('change',e=>{sortOrder=e.target.value;visibleLimit=24;renderItems();});
+    $('#load-more').addEventListener('click',()=>{visibleLimit+=24;renderItems();});
+    $('#categories').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;filter=b.dataset.category;visibleLimit=24;renderCategories();renderItems();});
+    $('#items').addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(!b)return;const p=active.offerings.find(x=>x.id===b.dataset.add);if(!p)return;cart[p.id]=Math.min(99,(cart[p.id]||0)+1);updateCartBadge();notice('Added to sample basket: '+p.name);});
     $('#open-cart').addEventListener('click',()=>{renderCart();$('#cart-dialog').showModal();});
     $('#close-cart').addEventListener('click',()=>$('#cart-dialog').close());
     $('#cart-dialog').addEventListener('click',e=>{if(e.target===$('#cart-dialog'))$('#cart-dialog').close();});
     $('#cart-items').addEventListener('click',e=>{const b=e.target.closest('[data-qty]');if(!b)return;cart[b.dataset.qty]=Math.max(0,Math.min(99,(cart[b.dataset.qty]||0)+Number(b.dataset.delta)));renderCart();});
     $('#clear-cart').addEventListener('click',()=>{cart={};renderCart();notice('Demo basket cleared');});
     $('#cart-whatsapp').addEventListener('click',()=>{
-      const lines=active.offerings.filter(p=>cart[p.id]>0).map(p=>'- '+p.name+' × '+cart[p.id]);
+      const lines=active.offerings.filter(p=>cart[p.id]>0).map(p=>'- '+p.name+' ('+(p.unit||'1 item')+') × '+cart[p.id]+(p.price==null?'':' · sample '+money(p.price*cart[p.id])));
       if(!lines.length)return;
       whatsapp(active.phone,'APPTEST DEMO ENQUIRY — NOT A REAL ORDER\nThis message was prepared from a demonstration website. Please do not treat it as a confirmed order or payment.\n\nExample items:\n'+lines.join('\n')+'\n\nPlease confirm real availability and prices before any transaction.');
     });
