@@ -5,6 +5,32 @@
   const $$ = (s) => Array.from(document.querySelectorAll(s));
   const MABRIG_CONTACT = '2347065342818';
   const SECTORS = ['Supermarket / Eatery','Restaurant / Food','Retail / Boutique','Services / Professional'];
+  const STARTERS = {
+    'Supermarket / Eatery':[
+      ['Rice and grains','Groceries','🍚','Illustrative grocery listing'],
+      ['Bread and snacks','Groceries','🥖','Illustrative bakery selection'],
+      ['Household essentials','Household','🧼','Illustrative cleaning products'],
+      ['Fresh meals','Eatery','🍲','Menu to be confirmed by the business']
+    ],
+    'Restaurant / Food':[
+      ['Signature meal','Meals','🍛','Placeholder for approved menu'],
+      ['Side dish','Meals','🍟','Placeholder for approved menu'],
+      ['Drinks','Beverages','🥤','Example restaurant category'],
+      ['Event catering','Services','🍽️','Availability to be confirmed']
+    ],
+    'Retail / Boutique':[
+      ['Featured fashion item','Clothing','👕','Illustrative fashion listing'],
+      ['Everyday footwear','Footwear','👟','Example collection'],
+      ['Bags and accessories','Accessories','👜','Example accessories'],
+      ['Seasonal collection','New arrivals','✨','Placeholder for approved products']
+    ],
+    'Services / Professional':[
+      ['Consultation','Services','🤝','Example introductory service'],
+      ['Main service package','Services','🛠️','Describe the approved service'],
+      ['Booking enquiry','Appointments','📅','Scheduling not connected'],
+      ['Client support','Support','💬','Example contact option']
+    ]
+  };
   const FALLBACK = {
     version:1, name:'BOSAL STORES', sector:'Supermarket / Eatery',
     headline:'Groceries, household essentials and a neighborhood eatery at Hilltop, Nsukka.',
@@ -66,8 +92,7 @@
     const n=waNumber(phone);
     if(!n){notice('No valid WhatsApp contact number. Confirm the number first.');return;}
     const url='https://wa.me/'+n+'?text='+encodeURIComponent(text);
-    const w=window.open(url,'_blank','noopener,noreferrer');
-    if(!w) window.location.href=url;
+    window.open(url,'_blank','noopener,noreferrer');
   }
   function notice(message) {
     const el=$('#toast');el.textContent=message;el.hidden=false;
@@ -83,6 +108,7 @@
     });
     if(page==='demo')renderDemo();
     if(page==='studio')renderDraft();
+    if(page==='home'||page==='handover')setBrand(published.color);
     window.scrollTo({top:0,behavior:'instant'});
   }
   function route(){showPage((location.hash||'#home').slice(1).toLowerCase());}
@@ -193,6 +219,12 @@
     $('#jump-catalog').addEventListener('click',()=>$('#catalog').scrollIntoView({behavior:'smooth'}));
     $('#demo-contact').addEventListener('click',()=>whatsapp(active.phone,
       'Hello '+active.name+'. I viewed your illustrative website concept through APPTEST. Please confirm your current offerings.'));
+    $('#copy-demo-link').addEventListener('click',()=>{
+      const url=new URL(window.location.href);url.hash='demo';
+      if(!navigator.clipboard || !navigator.clipboard.writeText){notice('Copy the URL from your browser after opening the demo page.');return;}
+      navigator.clipboard.writeText(url.toString()).then(()=>notice('Public demo link copied. Unpublished studio edits will not appear for others.'))
+        .catch(()=>notice('Cannot access clipboard. Copy the URL from the demo page.'));
+    });
     $('#feedback').addEventListener('click',()=>whatsapp(MABRIG_CONTACT,
       'Hello MABRIG Technologies. Feedback about the APPTEST prototype for '+active.name+':\n\n[My feedback]'));
     $('#request-proposal').addEventListener('click',()=>whatsapp(MABRIG_CONTACT,
@@ -209,6 +241,12 @@
       const lines=active.offerings.filter(p=>cart[p.id]>0).map(p=>'- '+p.name+' × '+cart[p.id]);
       if(!lines.length)return;
       whatsapp(active.phone,'APPTEST DEMO ENQUIRY — NOT A REAL ORDER\nThis message was prepared from a demonstration website. Please do not treat it as a confirmed order or payment.\n\nExample items:\n'+lines.join('\n')+'\n\nPlease confirm real availability and prices before any transaction.');
+    });
+    $('#load-template').addEventListener('click',()=>{
+      if($('#f-offerings').value.trim() && !window.confirm('Replace these draft offerings with illustrative starter examples for the selected industry?'))return;
+      const list=STARTERS[$('#f-sector').value]||STARTERS['Services / Professional'];
+      $('#f-offerings').value=list.map(parts=>parts.join(' | ')).join('\n');
+      renderDraft();notice('Illustrative industry examples loaded. Verify all items with the client.');
     });
     $('#proposal-form').addEventListener('input',renderDraft);
     $('#proposal-form').addEventListener('change',renderDraft);
