@@ -53,6 +53,9 @@
   let active = FALLBACK;
   let filter = 'All';
   let search = '';
+  let shopSection = 'store';
+  let sortOrder = 'featured';
+  let visibleLimit = 24;
   let cart = {};
   const clone = (o) => JSON.parse(JSON.stringify(o));
   const escapeHTML = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -69,18 +72,19 @@
     const name = cleanText(raw.name,80);
     const headline = cleanText(raw.headline,180);
     if (!name || !headline) throw new Error('Business name and headline are required.');
-    if (!Array.isArray(raw.offerings) || raw.offerings.length > 24) throw new Error('Provide 0–24 example products or services.');
+    if (!Array.isArray(raw.offerings) || raw.offerings.length > 300) throw new Error('Provide 0–300 example products or services.');
     const offerings = raw.offerings.map((p,i) => {
       if (!p || typeof p !== 'object') throw new Error('Invalid offering at line '+(i+1));
       const productName = cleanText(p.name,100);
       if (!productName) throw new Error('An offering has no name (line '+(i+1)+').');
-      return {id:'item-'+i,name:productName,category:cleanText(p.category,35)||'Other',icon:cleanText(p.icon,8)||'◈',description:cleanText(p.description,180),price:numberPrice(p.price)};
+      return {id:'item-'+i,name:productName,category:cleanText(p.category,35)||'Other',icon:cleanText(p.icon,8)||'◈',description:cleanText(p.description,180),price:numberPrice(p.price),
+ section:p.section==='restaurant'?'restaurant':'store',unit:cleanText(p.unit,55),tag:cleanText(p.tag,25)};
     });
     return {version:1,name,headline,sector:SECTORS.includes(raw.sector)?raw.sector:SECTORS[0],
       description:cleanText(raw.description,600),owner:cleanText(raw.owner,100),
       phone:cleanText(raw.phone,22),address:cleanText(raw.address,220),
       color:validColor(raw.color),status:['draft','client-review','approved-concept'].includes(raw.status)?raw.status:'draft',
-      offerings};
+      phoneAlt:cleanText(raw.phoneAlt,22),demoPrices:raw.demoPrices===true,offerings};
   }
   function waNumber(raw) {
     const d = String(raw||'').replace(/\D/g,'');
@@ -100,7 +104,7 @@
   }
   function setBrand(color){document.documentElement.style.setProperty('--brand',validColor(color));}
   function showPage(page) {
-    if(!['home','demo','studio','handover'].includes(page))page='home';
+    if(!['home','demo','studio','handover'].includes(page))page='demo';
     $$('.page').forEach((el)=>{el.hidden=(el.id!==page);});
     $$('[data-page]').forEach((b)=>{
       if(b.dataset.page===page)b.setAttribute('aria-current','page');
@@ -111,12 +115,12 @@
     if(page==='home'||page==='handover')setBrand(published.color);
     window.scrollTo({top:0,behavior:'instant'});
   }
-  function route(){showPage((location.hash||'#home').slice(1).toLowerCase());}
+  function route(){showPage((location.hash||'#demo').slice(1).toLowerCase());}
   function activeConfig(){return draftOverride||published;}
   function syncActive(){
     active=activeConfig();
     setBrand(active.color);
-    filter='All';search='';cart={};
+    filter='All';search='';shopSection='store';sortOrder='featured';visibleLimit=24;cart={};
     $('#search').value='';
     renderHome();renderDemo();renderCart();
   }
@@ -124,6 +128,8 @@
     $$('[data-bind=name]').forEach(el=>el.textContent=published.name);
     $$('[data-bind=headline]').forEach(el=>el.textContent=published.headline);
     $('#showcase-title').textContent=published.name;
+    $('#brand-logo-name').textContent=published.name;
+    $('#brand-logo-subtitle').textContent=published.sector+' · Nsukka';
     $('#showcase-summary').textContent=published.description;
     const list=published.offerings.slice(0,3);
     $('#device-products').innerHTML=list.length?list.map(p=>
@@ -132,58 +138,93 @@
   }
   function renderDemo(){
     setBrand(active.color);
-    $('#demo-sector').textContent=active.sector.toUpperCase();
+    const store=active.offerings.filter(p=>p.section==='store').length;
+    const restaurant=active.offerings.length-store;
+    $('#demo-sector').textContent='SUPERMARKET · RESTAURANT';
     $('#demo-name').textContent=active.name;
     $('#demo-headline').textContent=active.headline;
+    $('#hero-store-count').textContent=store.toLocaleString('en-NG')+'+';
+    $('#hero-meal-count').textContent=restaurant.toLocaleString('en-NG')+'+';
     $('#demo-owner').textContent=active.owner||'To be confirmed';
     $('#demo-address').textContent=active.address||'Address pending approval';
-    $('#demo-phone').textContent=active.phone||'Contact to be confirmed';
+    $('#demo-phone').textContent=[active.phone,active.phoneAlt].filter(Boolean).join(' / ')||'Contact to be confirmed';
     $('#about-name').textContent='Welcome to '+active.name;
-    $('#about-description').textContent=active.description||'This business concept is awaiting an approved description.';
-    $('#about-location').textContent=active.address?'Find us: '+active.address:'Contact the business to confirm its location.';
-    $('#catalog-notice').textContent=(draftOverride?'You are previewing an UNPUBLISHED draft in this browser. ':'')+
-      'Example listings are illustrative until the business verifies the products, availability and prices.';
-    renderCategories();renderItems();updateCartBadge();
+    $('#about-description').textContent=active.description||'Business description awaits approval.';
+    $('#about-location').textContent=active.address?'Find us: '+active.address:'Confirm location with business.';
+    $('#catalog-notice').textContent=(draftOverride?'UNPUBLISHED draft preview. ':'')+
+      'Fully populated SAMPLE catalogue. Products, displayed prices, meal availability and stock must be confirmed by BOSAL management.';
+    syncSectionButtons();renderCategories();renderItems();updateCartBadge();
+  }
+  function syncSectionButtons(){
+    $$('[data-store-section]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.storeSection===shopSection)));
+    $('#catalog-title').textContent=shopSection==='store'?'Shop BOSAL STORE':'BOSAL RESTAURANT Menu';
+    $('#catalog-subtitle').textContent=shopSection==='store'?
+      'Groceries, fresh foods, beverages, baby essentials, household items and more':
+      'Nigerian meals, soups, swallows, grills, snacks and refreshing drinks';
+    $('#search').placeholder=shopSection==='store'?'Search rice, milk, drinks, toiletries…':'Search jollof, egusi, grilled chicken…';
   }
   function renderCategories(){
-    const cats=['All',...new Set(active.offerings.map(p=>p.category))];
+    const cats=['All',...new Set(active.offerings.filter(p=>p.section===shopSection).map(p=>p.category))];
     if(!cats.includes(filter))filter='All';
     $('#categories').innerHTML=cats.map(c=>
       '<button class="chip" type="button" data-category="'+escapeHTML(c)+'" aria-pressed="'+String(c===filter)+'">'+escapeHTML(c)+'</button>'
     ).join('');
   }
   function renderItems(){
-    const matched=active.offerings.filter(p=>(filter==='All'||p.category===filter)&&
-       (p.name+' '+p.category+' '+p.description).toLowerCase().includes(search.toLowerCase()));
-    $('#items').innerHTML=matched.length?matched.map(p=>
-      '<article class="card item"><div class="item-visual" aria-hidden="true">'+escapeHTML(p.icon)+'</div><div class="item-content"><small>'+escapeHTML(p.category)+'</small><strong>'+escapeHTML(p.name)+'</strong><p>'+escapeHTML(p.description||'Illustrative business offering')+'</p><div class="item-footer"><span class="item-price">'+(p.price==null?'Price not set':'Indicative '+money(p.price))+'</span><button type="button" data-add="'+escapeHTML(p.id)+'" aria-label="Add '+escapeHTML(p.name)+' to demo basket">Add +</button></div></div></article>'
-    ).join(''):'<div class="empty"><strong>No matching example offerings.</strong><p class="muted">Try another category or search term.</p></div>';
+    const matched=active.offerings.filter(p=>p.section===shopSection &&
+       (filter==='All'||p.category===filter) &&
+       (p.name+' '+p.category+' '+p.description+' '+p.unit).toLowerCase().includes(search.toLowerCase()));
+    if(sortOrder==='price-low')matched.sort((a,b)=>(a.price??Infinity)-(b.price??Infinity));
+    else if(sortOrder==='price-high')matched.sort((a,b)=>(b.price??-1)-(a.price??-1));
+    else if(sortOrder==='az')matched.sort((a,b)=>a.name.localeCompare(b.name));
+    else matched.sort((a,b)=>Number(Boolean(b.tag))-Number(Boolean(a.tag)));
+    const page=matched.slice(0,visibleLimit);
+    const tones=['tone-0','tone-1','tone-2','tone-3','tone-4','tone-5'];
+    const shade=p=>tones[Array.from(p.category).reduce((v,ch)=>v+ch.charCodeAt(0),0)%tones.length];
+    $('#results-count').textContent='Showing '+page.length+' of '+matched.length+
+       (shopSection==='store'?' supermarket products':' restaurant selections');
+    $('#load-more').hidden=page.length>=matched.length;
+    $('#items').innerHTML=page.length?page.map(p=>
+      '<article class="card item retail-item"><div class="item-visual product-art '+shade(p)+'">'+
+       '<span class="product-art-symbol" aria-hidden="true">'+escapeHTML(p.icon)+'</span>'+
+       (p.tag?'<span class="product-tag">'+escapeHTML(p.tag)+'</span>':'')+
+       '<span class="product-unit-art">'+escapeHTML(p.unit||'Product')+'</span>'+
+      '</div><div class="item-content">'+
+       '<small class="product-category">'+escapeHTML(p.category)+'</small>'+
+       '<strong>'+escapeHTML(p.name)+'</strong>'+
+       '<p>'+escapeHTML(p.description||'Illustrative business offering')+'</p>'+
+       '<span class="product-pack">'+escapeHTML(p.unit||'1 item')+'</span>'+
+       '<div class="item-footer"><div><span class="item-price">'+(p.price==null?'Price on request':money(p.price))+
+       '</span><span class="sample-price">Demo price · confirm at store</span></div>'+
+       '<button type="button" data-add="'+escapeHTML(p.id)+'" aria-label="Add '+escapeHTML(p.name)+' to sample basket">+ Add</button></div>'+
+      '</div></article>'
+    ).join(''):'<div class="empty"><strong>No products match.</strong><p class="muted">Try another category or clear your search.</p></div>';
   }
   function updateCartBadge(){$('#cart-count').textContent=Object.values(cart).reduce((a,b)=>a+b,0);}
   function renderCart(){
     const products=active.offerings.filter(p=>cart[p.id]>0);
     $('#cart-items').innerHTML=products.length?products.map(p=>
-      '<div class="cart-line"><div><strong>'+escapeHTML(p.name)+'</strong><small>'+(p.price==null?'Price not supplied':money(p.price)+' indicative')+'</small></div><div class="qty"><button type="button" data-qty="'+escapeHTML(p.id)+'" data-delta="-1" aria-label="Remove one '+escapeHTML(p.name)+'">−</button><strong>'+cart[p.id]+'</strong><button type="button" data-qty="'+escapeHTML(p.id)+'" data-delta="1" aria-label="Add one '+escapeHTML(p.name)+'">+</button></div></div>'
+      '<div class="cart-line"><div><strong>'+escapeHTML(p.name)+'</strong><small>'+escapeHTML(p.unit||'1 item')+' · '+(p.price==null?'Price not supplied':money(p.price)+' SAMPLE price')+'</small></div><div class="qty"><button type="button" data-qty="'+escapeHTML(p.id)+'" data-delta="-1" aria-label="Remove one '+escapeHTML(p.name)+'">−</button><strong>'+cart[p.id]+'</strong><button type="button" data-qty="'+escapeHTML(p.id)+'" data-delta="1" aria-label="Add one '+escapeHTML(p.name)+'">+</button></div></div>'
     ).join(''):'<p class="muted">Your demo basket is empty. Add example offerings to try the concept.</p>';
     let total=0;let missing=0;
     products.forEach(p=>{if(p.price==null)missing++;else total+=(p.price*cart[p.id]);});
     $('#cart-summary').textContent=products.length?
-      'Indicative known-price subtotal: '+money(total)+(missing?' + '+missing+' item type(s) without prices.':''):'No demo items selected.';
+      'Sample subtotal (not payable): '+money(total)+(missing?' + '+missing+' item type(s) without prices.':''):'No demo items selected.';
     $('#cart-whatsapp').disabled=!products.length;
     updateCartBadge();
   }
   function getDraftFromForm(){
     const lines=$('#f-offerings').value.split(/\r?\n/).map(line=>line.trim()).filter(Boolean);
-    if(lines.length>24)throw new Error('Maximum 24 products or services.');
+    if(lines.length>300)throw new Error('Maximum 300 products or services.');
     const offerings=lines.map((line,i)=>{
       const parts=line.split('|').map(x=>x.trim());
-      if(parts.length>5)throw new Error('Too many columns on offering line '+(i+1));
+      if(parts.length>8)throw new Error('Too many columns on offering line '+(i+1));
       return {name:parts[0],category:parts[1]||'Other',icon:parts[2]||'◈',
-       description:parts[3]||'Illustrative listing',price:parts[4]||null};
+       description:parts[3]||'Illustrative listing',price:parts[4]||null,section:parts[5]||'store',unit:parts[6]||'',tag:parts[7]||''};
     });
     return normalize({name:$('#f-name').value,sector:$('#f-sector').value,headline:$('#f-headline').value,
       description:$('#f-description').value,owner:$('#f-owner').value,phone:$('#f-phone').value,
-      address:$('#f-address').value,color:$('#f-color').value,status:$('#f-status').value,offerings});
+      address:$('#f-address').value,color:$('#f-color').value,status:$('#f-status').value,phoneAlt:published.phoneAlt,demoPrices:true,offerings});
   }
   function populateForm(c){
     $('#f-name').value=c.name;$('#f-sector').value=c.sector;
@@ -191,7 +232,7 @@
     $('#f-owner').value=c.owner;$('#f-phone').value=c.phone;$('#f-address').value=c.address;
     $('#f-color').value=c.color;$('#f-status').value=c.status;
     $('#f-offerings').value=c.offerings.map(p=>[
-      p.name,p.category,p.icon,p.description,p.price==null?'':p.price
+      p.name,p.category,p.icon,p.description,p.price==null?'':p.price,p.section||'store',p.unit||'',p.tag||''
     ].join(' | ')).join('\n');
     renderDraft();
   }
@@ -320,16 +361,24 @@
       'Hello MABRIG Technologies. Feedback about the APPTEST prototype for '+active.name+':\n\n[My feedback]'));
     $('#request-proposal').addEventListener('click',()=>whatsapp(MABRIG_CONTACT,
       'Hello MABRIG Technologies. I would like an interactive website or app proposal for my business.'));
-    $('#search').addEventListener('input',e=>{search=e.target.value;renderItems();});
-    $('#categories').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;filter=b.dataset.category;renderCategories();renderItems();});
-    $('#items').addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(!b)return;const p=active.offerings.find(x=>x.id===b.dataset.add);if(!p)return;cart[p.id]=Math.min(99,(cart[p.id]||0)+1);updateCartBadge();notice('Added to demonstration basket: '+p.name);});
+    $('#search').addEventListener('input',e=>{search=e.target.value;visibleLimit=24;renderItems();});
+    $('#section-switch').addEventListener('click',e=>{
+      const b=e.target.closest('[data-store-section]');if(!b)return;
+      shopSection=b.dataset.storeSection;filter='All';search='';visibleLimit=24;sortOrder='featured';
+      $('#search').value='';$('#sort-products').value='featured';
+      syncSectionButtons();renderCategories();renderItems();
+    });
+    $('#sort-products').addEventListener('change',e=>{sortOrder=e.target.value;visibleLimit=24;renderItems();});
+    $('#load-more').addEventListener('click',()=>{visibleLimit+=24;renderItems();});
+    $('#categories').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;filter=b.dataset.category;visibleLimit=24;renderCategories();renderItems();});
+    $('#items').addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(!b)return;const p=active.offerings.find(x=>x.id===b.dataset.add);if(!p)return;cart[p.id]=Math.min(99,(cart[p.id]||0)+1);updateCartBadge();notice('Added to sample basket: '+p.name);});
     $('#open-cart').addEventListener('click',()=>{renderCart();$('#cart-dialog').showModal();});
     $('#close-cart').addEventListener('click',()=>$('#cart-dialog').close());
     $('#cart-dialog').addEventListener('click',e=>{if(e.target===$('#cart-dialog'))$('#cart-dialog').close();});
     $('#cart-items').addEventListener('click',e=>{const b=e.target.closest('[data-qty]');if(!b)return;cart[b.dataset.qty]=Math.max(0,Math.min(99,(cart[b.dataset.qty]||0)+Number(b.dataset.delta)));renderCart();});
     $('#clear-cart').addEventListener('click',()=>{cart={};renderCart();notice('Demo basket cleared');});
     $('#cart-whatsapp').addEventListener('click',()=>{
-      const lines=active.offerings.filter(p=>cart[p.id]>0).map(p=>'- '+p.name+' × '+cart[p.id]);
+      const lines=active.offerings.filter(p=>cart[p.id]>0).map(p=>'- '+p.name+' ('+(p.unit||'1 item')+') × '+cart[p.id]+(p.price==null?'':' · sample '+money(p.price*cart[p.id])));
       if(!lines.length)return;
       whatsapp(active.phone,'APPTEST DEMO ENQUIRY — NOT A REAL ORDER\nThis message was prepared from a demonstration website. Please do not treat it as a confirmed order or payment.\n\nExample items:\n'+lines.join('\n')+'\n\nPlease confirm real availability and prices before any transaction.');
     });
@@ -352,7 +401,7 @@
     $('#import-config').addEventListener('click',()=>$('#config-file').click());
     $('#config-file').addEventListener('change',async e=>{
       const file=e.target.files&&e.target.files[0];e.target.value='';if(!file)return;
-      if(file.size>50000){notice('Import file exceeds 50 KB limit.');return;}
+      if(file.size>240000){notice('Import file exceeds 240 KB limit.');return;}
       try{const obj=normalize(JSON.parse(await file.text()));populateForm(obj);notice('Imported locally. Not published.');}
       catch(err){notice('Cannot import: '+err.message);}
     });

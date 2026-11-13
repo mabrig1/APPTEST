@@ -29,13 +29,34 @@ test('all pages, enquiry form and owner-only AI controls are present',()=>{
   assert.match(js,/APPTEST DEMO ENQUIRY — NOT A REAL ORDER/);
   assert.match(js,/\/api\/status/);
 });
-test('BOSAL demo products are explicitly illustrative',()=>{
-  assert.equal(config.name,'BOSAL STORES');
+test('BOSAL full shop and restaurant are populated with labelled sample merchandise',()=>{
+  assert.equal(config.name,'BOSAL STORE');
+  assert.equal(config.restaurantName,'BOSAL RESTAURANT');
   assert.equal(config.owner,'AGBO SALVATION, O.');
   assert.equal(config.phone,'09063866923');
+  assert.equal(config.phoneAlt,'09046725725');
   assert.ok(config.address.includes('Trinity Lodge'));
-  assert.ok(config.offerings.length>0&&config.offerings.length<=24);
-  config.offerings.forEach(item=>assert.equal(item.price,null));
+  assert.equal(config.demoPrices,true);
+  assert.ok(config.offerings.length>=200&&config.offerings.length<=300);
+  assert.ok(config.offerings.filter(x=>x.section==='store').length>=150);
+  assert.ok(config.offerings.filter(x=>x.section==='restaurant').length>=30);
+  assert.ok(new Set(config.offerings.map(x=>x.category)).size>=20);
+  for(const product of config.offerings){
+    assert.ok(product.name&&product.category&&product.unit);
+    assert.ok(product.section==='store'||product.section==='restaurant');
+    assert.ok(product.price===null||(typeof product.price==='number'&&product.price>0));
+  }
+});
+test('BOSAL storefront is the initial experience, not APPTEST marketing',()=>{
+  assert.match(html,/id="home" hidden/);
+  assert.match(html,/id="demo"/);
+  assert.match(html,/id="brand-logo-name">BOSAL STORE/);
+  assert.match(html,/BOSAL RESTAURANT/);
+  assert.match(html,/id="section-switch"/);
+  assert.match(html,/id="sort-products"/);
+  assert.match(html,/id="load-more"/);
+  assert.match(js,/location.hash\|\|'#demo'/);
+  assert.match(js,/sample basket/i);
 });
 test('public status is disabled by default and does not expose keys',async()=>{
   const response=await status({env:{OPENROUTER_API_KEY:'hidden',RESEND_API_KEY:'hidden'}});
