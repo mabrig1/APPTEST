@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "name": "BOSAL STORES",
+  "name": "BOSAL STORE",
   "sector": "Supermarket / Eatery",
-  "headline": "Shop everyday groceries, household essentials and discover delicious food at Hilltop, Nsukka.",
-  "description": "Explore a fully populated demonstration of the proposed BOSAL STORE supermarket and BOSAL RESTAURANT experience. Actual items, meal availability and naira prices must be confirmed by BOSAL management before this can operate as a real shop.",
+  "headline": "Your supermarket and restaurant at Hilltop, Nsukka — everyday groceries, household essentials and Nigerian meals.",
+  "description": "Welcome to the BOSAL STORE and BOSAL RESTAURANT digital shopping demonstration. Browse 176 supermarket goods and 35 meal selections, add to a sample basket and enquire on WhatsApp. All goods, food selections, sample prices and availability require approval from BOSAL management before real transactions.",
   "owner": "AGBO SALVATION, O.",
   "phone": "09063866923",
   "phoneAlt": "09046725725",
@@ -1922,5 +1922,6 @@
       "icon": "🌿",
       "description": "Aromatic Nigerian leaf spice"
     }
-  ]
+  ],
+  "restaurantName": "BOSAL RESTAURANT"
 }
