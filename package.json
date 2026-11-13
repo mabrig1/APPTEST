@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "type": "module",
+  "name": "apptest-prototype",
+  "version": "1.1.0",
+  "description": "Reusable proposal previews on Cloudflare Pages + Functions",
+  "scripts": {
+    "test": "node --test tests/*.mjs",
+    "check": "node --check public/app.js && node --test tests/*.mjs",
+    "dev": "npx wrangler pages dev public",
+    "deploy:manual": "npx wrangler pages deploy public --project-name apptest"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
