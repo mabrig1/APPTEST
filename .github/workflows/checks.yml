@@ -1,9 +1,7 @@
 name: APPTEST checks
 on:
   push:
-    branches:
-      - main
-      - "feat/**"
+    branches: [main, "feat/**"]
   pull_request:
 permissions:
   contents: read
@@ -12,7 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate JavaScript syntax
-        run: node --check app.js
-      - name: Run app checks
-        run: node --test tests/check.mjs
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate JavaScript
+        run: |
+          node --check public/app.js
+          node --check functions/_lib/common.js
+          node --check functions/api/status.js
+          node --check functions/api/lead.js
+          node --check functions/api/proposal.js
+      - name: Run offline tests
+        run: node --test tests/*.mjs
